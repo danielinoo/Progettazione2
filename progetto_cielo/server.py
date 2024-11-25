@@ -1,4 +1,4 @@
-
+from flask import Flask, jsonify, request
 import psycopg2
 
 host="localhost"
@@ -6,6 +6,8 @@ port="5432"
 dbname="cielo"
 user="postgres"
 password="postgres"
+
+api = Flask(__name__)
 
 
 try:
@@ -21,74 +23,58 @@ try:
 except Exception as e:
     print(f"Errore durante la connessione al database: {e}")
 
+
+@api.route('/visualizza_volo')
 def visualizza_volo():
     cursor = connection.cursor()
     #eseguo query
     cursor.execute("select * from volo")
     #recupero dati
     rows = cursor.fetchall()
-    for row in rows:
-        print(row)
-    print("\n")
-    connection.close()
+    cursor.close()
+    return rows 
 
+@api.route('/visualizza_aeroporti')
 def visualizza_aeroporti():
     cursor1 = connection.cursor()
     #eseguo query
     cursor1.execute("select * from aeroporto")
     rows = cursor1.fetchall()
-    for row in rows:
-        print(row)
-    print("\n")
-    connection.close()
+    cursor1.close()
+    return rows   
 
+@api.route('/visualizza_compagnie')
 def visualizza_compagnie():
     cursor2 = connection.cursor()
     #eseguo query
     cursor2.execute("select * from compagnia")
     rows = cursor2.fetchall()
-    for row in rows:
-        print(row)
-    print("\n")
-    connection.close()
+    cursor2.close()
+    return rows 
 
+
+@api.route('/query_utente', methods = ['POST'])
 def query_utente():
-    try:    
-        query_ut= input("\ninserisci la tua query:\n")
-        cursor3 = connection.cursor()
-        cursor3.execute(query_ut)
-        rows = cursor3.fetchall()
-        for row in rows:
-            print(row)
-        print("\n")
-    except Exception as e:
-        print(f"query inserita non valida,{e}")
-    finally:
-        connection.close()
+
+        content_type = request.headers.get('Content-Type')
+        if content_type == 'application/json':
+            query_ut= str(request.json.get('query'))
+            try:
+                cursor3 = connection.cursor()
+                cursor3.execute(query_ut)
+                rows = cursor3.fetchall()
+                cursor3.close()
+                return rows
+            except  Exception as e:
+                    return jsonify({"ATTENZIONE": "ERRORE", "Msg": e}), 404
+        else:
+            return jsonify({"Esito": "ERRORE", "Msg": "content-type non supportato "}) 
 
 
 
-while True:
-    print("\nOperazioni disponibili:")
-    print("1. visualizza i voli")
-    print("2.visualizza gli aeroposti")
-    print("3. visualizza le compagnie")
-    print("4. inserisci la tua query")
-    print("5. Esci\n")
-    a = int(input())
 
-    if a ==1:
-        visualizza_volo()
-    elif a ==2:
-        visualizza_aeroporti()
-    elif a ==3:
-        visualizza_compagnie()
-    elif a ==4:
-        query_utente()
-    else:
-        print("\nbuona giornata")
-        break
 
-        
 
+if __name__ == '__main__'  :    
+    api.run(host="0.0.0.0", port=8080)
 
