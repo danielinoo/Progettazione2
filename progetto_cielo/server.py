@@ -64,9 +64,12 @@ def query_utente():
                 cursor3.execute(query_ut)
                 rows = cursor3.fetchall()
                 cursor3.close()
+
                 return rows
-            except  Exception as e:
-                    return jsonify({"ATTENZIONE": "ERRORE", "Msg": e}), 404
+            except (Exception, psycopg2.DatabaseError) as error:
+
+                    error = str(error)
+                    return jsonify({"ATTENZIONE": "ERRORE", "Msg": error}), 404
         else:
             return jsonify({"Esito": "ERRORE", "Msg": "content-type non supportato "}) 
 
