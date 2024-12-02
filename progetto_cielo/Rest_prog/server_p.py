@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, request
 import psycopg2
 
-host="localhost"
-port="5432"
+host="172.24.111.42"
+port = "5432"
 dbname="cielo"
 user="postgres"
 password="postgres"
@@ -16,12 +16,15 @@ try:
         port = port,
         dbname = dbname,       
         user = user,
-        password = password
-    )
+        password = password,
+            )
     print("connessione al database svvenuta con successo")
 
 except Exception as e:
     print(f"Errore durante la connessione al database: {e}")
+
+
+
 
 
 @api.route('/visualizza_volo')
@@ -74,10 +77,32 @@ def query_utente():
             return jsonify({"Esito": "ERRORE", "Msg": "content-type non supportato "}) 
 
 
+# while True:
+#     print("\nMenu principale:")
+#     print("1. Visualizzare i voli")
+#     print("2. Aggiungere un volo")
+#     print("3. Modificare un volo")
+#     print("4. Uscire")
+
+#     try:
+#         scelta = int(input("Scegli un'opzione (1-4): "))
+
+#         if scelta == 1:
+#             visualizza_volo()
+#         elif scelta == 2:
+#             visualizza_aeroporti()
+#         elif scelta == 3:
+#             visualizza_compagnie()
+#         elif scelta == 4:
+#             query_utente()
+#         else:
+#             print("Opzione non valida. Per favore scegli un numero tra 1 e 4.")
+#     except ValueError:
+#         print("Per favore, inserisci un numero valido.")
 
 
 
 
 if __name__ == '__main__'  :    
-    api.run(host="0.0.0.0", port=8080)
+    api.run(host="0.0.0.0", port=8085)
 
