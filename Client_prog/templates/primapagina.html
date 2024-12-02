@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Voli Database</title>
+</head>
+<body>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* roba generale */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* heater */
+header {
+    background-color: #2d3e50;
+    color: white;
+    padding: 20px 0;
+}
+
+header h1 {
+    font-size: 2.5em;
+    text-align: center;
+}
+
+
+/* Hero Section */
+.hero {
+
+    color: rgb(24, 21, 21);
+    padding: 100px 0;
+    text-align: center;
+}
+
+.hero h2 {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.search-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+
+
+
+/* Offers Section */
+.offers {
+    background-color: white;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.offers h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.offer-card {
+    display: inline-block;
+    background-color: #f4f4f4;
+    margin: 10px;
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+.tipo_opzione{
+    font-size: 1.8em;
+    color: #2d3e50;
+    border: 0px;
+    background-color: #f4f4f4;
+    margin: 10px;
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tipo_opzione p{
+    font-size: 0.6em;
+    color: #5e5e5e;
+}
+
+
+    </style>
+    <header>
+        <div class="container">
+            <h1>Cielo Database</h1>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Decidi cosa vuoi visualzzare</h2>
+            <form class="search-form">
+            </form>
+        </div>
+    </section>
+
+    <section id="offers" class="offers">
+        <div class="container">
+            <form action=" /Visualizza_voli" method="get">
+                <button class="tipo_opzione" type="submit">
+                    <strong>Voli</strong><br>
+                    <p>premi per visualizzare</p>
+                </button>
+            </form>
+
+            <form action=" /Visualizza_aeroporto" method="get">
+                <button class="tipo_opzione" type="submit">
+                    <strong>Aeroporto</strong><br>
+                    <p>premi per visualizzare</p>
+                </button>
+            </form>
+
+            <div class="offer-card">
+                <h3>Venezia - Londra</h3>
+                <p>€ 150</p>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
