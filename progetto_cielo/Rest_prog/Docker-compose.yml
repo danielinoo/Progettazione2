@@ -13,7 +13,7 @@ services:
             POSTGRES_PASSWORD: postgres
             POSTGRES_DB: cielo
 
-      volumes: localdatabase:/data/db  #RIVEDERE I DATI DA PRENDERE
+      volumes: /project/sql1/postgresql/postgresData #RIVEDERE I DATI DA PRENDERE
 
       ports: "5433:5432"
 
