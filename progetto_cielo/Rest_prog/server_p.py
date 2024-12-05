@@ -1,34 +1,33 @@
 from flask import Flask, jsonify, request
 import psycopg2
-
-host="172.24.111.42"
-port = "5432"
-dbname="cielo"
-user="postgres"
-password="postgres"
+from psycopg2.extras import RealDictCursor
 
 api = Flask(__name__)
 
 
-try:
-    connection = psycopg2.connect(
-        host = host,
-        port = port,
-        dbname = dbname,       
-        user = user,
-        password = password,
-            )
-    print("connessione al database svvenuta con successo")
+db_config = {
+    "host": "172.19.130.81",  # Cambio con l'indirizzo IP della macchina
+    "port": "5432",
+    "dbname": "cielo",
+    "user": "postgres",
+    "password": "postgres"
+}
 
-except Exception as e:
-    print(f"Errore durante la connessione al database: {e}")
-
-
-
+def get_db_connection():
+    try:
+        return psycopg2.connect(**db_config, cursor_factory=RealDictCursor)
+    except Exception as e:
+        return str(e)
 
 
-@api.route('/visualizza_volo')
+@api.route("/", methods=['GET'])
+def lesgosky():
+     return "<p> bello zi </p>"
+
+
+@api.route('/visualizza_volo', methods=['GET'])
 def visualizza_volo():
+    connection = get_db_connection()
     cursor = connection.cursor()
     #eseguo query
     cursor.execute("select * from volo")
@@ -37,8 +36,9 @@ def visualizza_volo():
     cursor.close()
     return rows 
 
-@api.route('/visualizza_aeroporti')
+@api.route('/visualizza_aeroporti', methods=['GET'])
 def visualizza_aeroporti():
+    connection = get_db_connection()
     cursor1 = connection.cursor()
     #eseguo query
     cursor1.execute("select * from aeroporto")
@@ -46,8 +46,10 @@ def visualizza_aeroporti():
     cursor1.close()
     return rows   
 
-@api.route('/visualizza_compagnie')
+@api.route('/visualizza_compagnie', methods=['GET'])
 def visualizza_compagnie():
+
+    connection = get_db_connection()
     cursor2 = connection.cursor()
     #eseguo query
     cursor2.execute("select * from compagnia")
@@ -63,6 +65,8 @@ def query_utente():
         if content_type == 'application/json':
             query_ut= str(request.json.get('query'))
             try:
+
+                connection = get_db_connection()
                 cursor3 = connection.cursor()
                 cursor3.execute(query_ut)
                 rows = cursor3.fetchall()
@@ -77,32 +81,17 @@ def query_utente():
             return jsonify({"Esito": "ERRORE", "Msg": "content-type non supportato "}) 
 
 
-# while True:
-#     print("\nMenu principale:")
-#     print("1. Visualizzare i voli")
-#     print("2. Aggiungere un volo")
-#     print("3. Modificare un volo")
-#     print("4. Uscire")
+@api.errorhandler(404)
+def not_found_error(error):
+    return jsonify({"error": "Risorsa non trovata"}), 404
 
-#     try:
-#         scelta = int(input("Scegli un'opzione (1-4): "))
-
-#         if scelta == 1:
-#             visualizza_volo()
-#         elif scelta == 2:
-#             visualizza_aeroporti()
-#         elif scelta == 3:
-#             visualizza_compagnie()
-#         elif scelta == 4:
-#             query_utente()
-#         else:
-#             print("Opzione non valida. Per favore scegli un numero tra 1 e 4.")
-#     except ValueError:
-#         print("Per favore, inserisci un numero valido.")
+@api.errorhandler(500)
+def internal_server_error(error):
+    return jsonify({"error": "Errore interno del server"}), 500
 
 
 
 
 if __name__ == '__main__'  :    
-    api.run(host="0.0.0.0", port=8085)
+    api.run(host="0.0.0.0", port=5004)
 

@@ -1,25 +1,24 @@
+
 version: '3.8'
-#segue la lista dei servizi
+
 services:
-    server_p:
-      ports:
-        - 8085:8085
-      depends_on:
-        - server_p
+  server_p:
+    build: .
+    ports:
+      - "5004:5004"
+    depends_on:
+      - db
 
-    postgres:
-      environment:
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres
-            POSTGRES_DB: cielo
-
-      volumes: /project/sql1/postgresql/postgresData #RIVEDERE I DATI DA PRENDERE
-
-      ports: "5433:5432"
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cielo
+    ports:
+      - "5432:5432" #cambio la porta esterna
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  localdatabase:
-  
-networks:
-  composenetwork:
-    driver: bridge
+  postgres_data:
