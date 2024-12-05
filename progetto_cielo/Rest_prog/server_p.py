@@ -5,6 +5,7 @@ from psycopg2.extras import RealDictCursor
 api = Flask(__name__)
 
 
+#http://127.0.0.1:5004/
 db_config = {
     #ip addr
     "host": "172.19.130.81",  # va cambiato ogni volta che ri accende/riavvia la macchina
