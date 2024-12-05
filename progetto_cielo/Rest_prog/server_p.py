@@ -6,7 +6,8 @@ api = Flask(__name__)
 
 
 db_config = {
-    "host": "172.19.130.81",  # Cambio con l'indirizzo IP della macchina
+    #ip addr
+    "host": "172.19.130.81",  # va cambiato ogni volta che ri accende/riavvia la macchina
     "port": "5432",
     "dbname": "cielo",
     "user": "postgres",
@@ -58,27 +59,27 @@ def visualizza_compagnie():
     return rows 
 
 
-@api.route('/query_utente', methods = ['POST'])
-def query_utente():
+# @api.route('/query_utente', methods = ['POST'])
+# def query_utente():
 
-        content_type = request.headers.get('Content-Type')
-        if content_type == 'application/json':
-            query_ut= str(request.json.get('query'))
-            try:
+#         content_type = request.headers.get('Content-Type')
+#         if content_type == 'application/json':
+#             query_ut= str(request.json.get('query'))
+#             try:
 
-                connection = get_db_connection()
-                cursor3 = connection.cursor()
-                cursor3.execute(query_ut)
-                rows = cursor3.fetchall()
-                cursor3.close()
+#                 connection = get_db_connection()
+#                 cursor3 = connection.cursor()
+#                 cursor3.execute(query_ut)
+#                 rows = cursor3.fetchall()
+#                 cursor3.close()
 
-                return rows
-            except (Exception, psycopg2.DatabaseError) as error:
+#                 return rows
+#             except (Exception, psycopg2.DatabaseError) as error:
 
-                    error = str(error)
-                    return jsonify({"ATTENZIONE": "ERRORE", "Msg": error}), 404
-        else:
-            return jsonify({"Esito": "ERRORE", "Msg": "content-type non supportato "}) 
+#                     error = str(error)
+#                     return jsonify({"ATTENZIONE": "ERRORE", "Msg": error}), 404
+#         else:
+#             return jsonify({"Esito": "ERRORE", "Msg": "content-type non supportato "}) 
 
 
 @api.errorhandler(404)
