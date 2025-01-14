@@ -1,14 +1,15 @@
 from flask import Flask, jsonify, request
 import psycopg2
 from psycopg2.extras import RealDictCursor
+from flask_cors import CORS
 
 api = Flask(__name__)
 
-
+CORS(api)
 #http://127.0.0.1:5004/
 db_config = {
     #ip addr
-    "host": "172.19.130.81",  # va cambiato ogni volta che ri accende/riavvia la macchina
+    "host": "172.28.25.68",  # va cambiato ogni volta che ri accende/riavvia la macchina
     "port": "5432",
     "dbname": "cielo",
     "user": "postgres",
